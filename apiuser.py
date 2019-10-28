@@ -13,6 +13,11 @@ users = [
         "occupation": "Network Engineer"
     },
     {
+        "name": "Nicholas",
+        "age": 40 ,
+        "occupation": "President"
+    },
+    {
         "name": "Elvin",
         "age": 32,
         "occupation": "Doctor"
@@ -25,11 +30,19 @@ users = [
 ]
 
 class User(Resource):
-    def get(self, name):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("name")
+        args = parser.parse_args()
+        findname = args["name"]
+
+        result = []
         for user in users:
-            if(name == user["name"]):
-                return user, 200
-        return "User not found", 404
+            if(findname == user["name"]):
+                result.append(user)
+        
+        if result : return result, 200       
+        else : return "User not found", 404
 
     def post(self, name):
         parser = reqparse.RequestParser()
@@ -74,7 +87,8 @@ class User(Resource):
         users = [user for user in users if user["name"] != name]
         return "{} is deleted.".format(name), 200
 
-api.add_resource(User, "/user/<string:name>")
+#api.add_resource(User, "/user/<string:name>")
+api.add_resource(User, "/user")
 
 
 app.run(debug=True,host="0.0.0.0",port=5000)
