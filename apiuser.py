@@ -2,6 +2,11 @@
 
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
+import logging
+
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.warning('This will get logged to a file')
+
 
 app = Flask(__name__)
 api = Api(app)
